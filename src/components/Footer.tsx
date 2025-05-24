@@ -1,6 +1,7 @@
 
 import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -141,13 +142,17 @@ const Footer = () => {
           <h3 className="text-2xl font-bold mb-4 text-foundation-light">Ready to Make a Difference?</h3>
           <p className="text-gray-300 mb-6">Join us in transforming lives and building sustainable communities.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-foundation-light text-foundation-dark hover:bg-foundation-light/90">
-              <Heart className="w-4 h-4 mr-2" />
-              Donate Now
-            </Button>
-            <Button variant="outline" className="border-foundation-light text-foundation-light hover:bg-foundation-light hover:text-foundation-dark">
-              Become a Partner
-            </Button>
+            <Link to="/donate">
+              <Button className="bg-foundation-light text-foundation-dark hover:bg-foundation-light/90">
+                <Heart className="w-4 h-4 mr-2" />
+                Donate Now
+              </Button>
+            </Link>
+            <Link to="/partner-with-us">
+              <Button variant="outline" className="border-foundation-light text-foundation-light hover:bg-foundation-light hover:text-foundation-dark">
+                Become a Partner
+              </Button>
+            </Link>
           </div>
         </div>
 

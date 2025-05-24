@@ -1,6 +1,7 @@
 
 import { ArrowRight, Heart, Users, GraduationCap, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -25,15 +26,19 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-foundation-light text-foundation-blue hover:bg-foundation-light/90 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105">
-                <Heart className="w-5 h-5 mr-2" />
-                Lend A Hand
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
+              <Link to="/lend-a-hand">
+                <Button size="lg" className="bg-foundation-light text-foundation-blue hover:bg-foundation-light/90 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 w-full sm:w-auto">
+                  <Heart className="w-5 h-5 mr-2" />
+                  Lend A Hand
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
               
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-foundation-blue px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300">
-                Partner With Us
-              </Button>
+              <Link to="/partner-with-us">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-foundation-blue px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 w-full sm:w-auto">
+                  Partner With Us
+                </Button>
+              </Link>
             </div>
           </div>
 
