@@ -9,6 +9,9 @@ import LendAHand from "./pages/LendAHand";
 import PartnerWithUs from "./pages/PartnerWithUs";
 import Donate from "./pages/Donate";
 import Volunteer from "./pages/Volunteer";
+import JigawaProject from "./pages/JigawaProject";
+import GirlsProject from "./pages/GirlsProject";
+import EconomicEmpowerment from "./pages/EconomicEmpowerment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +28,9 @@ const App = () => (
           <Route path="/partner-with-us" element={<PartnerWithUs />} />
           <Route path="/donate" element={<Donate />} />
           <Route path="/volunteer" element={<Volunteer />} />
+          <Route path="/jigawa-project" element={<JigawaProject />} />
+          <Route path="/girls-project" element={<GirlsProject />} />
+          <Route path="/economic-empowerment" element={<EconomicEmpowerment />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

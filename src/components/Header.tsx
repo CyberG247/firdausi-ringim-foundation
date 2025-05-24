@@ -10,9 +10,9 @@ const Header = () => {
   const navItems = [
     { name: 'Home', href: '/' },
     { name: 'About Us', href: '#about' },
-    { name: 'Jigawa Project', href: '#jigawa-project' },
-    { name: 'Girls Project', href: '#girls-project' },
-    { name: 'Economic Empowerment', href: '#economic-empowerment' },
+    { name: 'Jigawa Project', href: '/jigawa-project' },
+    { name: 'Girls Project', href: '/girls-project' },
+    { name: 'Economic Empowerment', href: '/economic-empowerment' },
     { name: 'Impact Dashboard', href: '#impact' },
     { name: 'Contact', href: '#contact' },
   ];
