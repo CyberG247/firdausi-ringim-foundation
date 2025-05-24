@@ -1,4 +1,3 @@
-
 import { Heart, Users, Target, Award } from 'lucide-react';
 
 const AboutUs = () => {
@@ -77,6 +76,20 @@ const AboutUs = () => {
           </p>
         </div>
 
+        {/* Community Impact Section */}
+        <div className="mb-16">
+          <img 
+            src="/lovable-uploads/e564c03f-8a4b-4727-a3f9-f2d91bcdcf89.png" 
+            alt="Firdausi Ringim Foundation community impact - beneficiaries receiving support" 
+            className="w-full rounded-2xl shadow-lg"
+          />
+          <div className="text-center mt-6">
+            <p className="text-lg text-gray-600 italic">
+              Our community impact in action - empowering lives across Jigawa State
+            </p>
+          </div>
+        </div>
+
         {/* Founder Section */}
         <div className="bg-white rounded-2xl p-8 lg:p-12 shadow-lg">
           <div className="text-center mb-8">
@@ -86,10 +99,12 @@ const AboutUs = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
             <div className="lg:col-span-1 text-center">
-              <div className="w-48 h-48 mx-auto rounded-full bg-gradient-to-br from-foundation-blue to-foundation-light p-1 mb-6">
-                <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center">
-                  <Users className="w-20 h-20 text-foundation-blue" />
-                </div>
+              <div className="w-48 h-48 mx-auto rounded-full p-1 mb-6 bg-gradient-to-br from-foundation-blue to-foundation-light">
+                <img 
+                  src="/lovable-uploads/db3f1040-f363-469d-9429-d1d2692e7027.png" 
+                  alt="Firdausi Umar Ringim - Founder and Director" 
+                  className="w-full h-full rounded-full object-cover"
+                />
               </div>
               <h4 className="text-2xl font-bold text-foundation-dark mb-2">Firdausi Umar Ringim</h4>
               <p className="text-foundation-blue font-semibold">Founder & Director</p>
