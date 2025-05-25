@@ -101,10 +101,28 @@ export default {
 				},
 				'slide-in-left': {
 					'0%': {
-						transform: 'translateX(-100%)'
+						transform: 'translateX(-100%)',
+						opacity: '0'
 					},
 					'100%': {
-						transform: 'translateX(0)'
+						transform: 'translateX(0)',
+						opacity: '1'
+					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0px)'
+					},
+					'50%': {
+						transform: 'translateY(-20px)'
+					}
+				},
+				'glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 5px rgba(102, 204, 255, 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 20px rgba(102, 204, 255, 0.8)'
 					}
 				}
 			},
@@ -112,9 +130,56 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.6s ease-out',
-				'slide-in-left': 'slide-in-left 0.5s ease-out'
+				'slide-in-left': 'slide-in-left 0.5s ease-out',
+				'float': 'float 3s ease-in-out infinite',
+				'glow': 'glow 2s ease-in-out infinite alternate'
+			},
+			animationDelay: {
+				'200': '200ms',
+				'300': '300ms',
+				'400': '400ms',
+				'500': '500ms',
+				'600': '600ms',
+				'700': '700ms',
+				'800': '800ms',
+				'900': '900ms',
+				'1000': '1000ms'
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }: any) {
+			const newUtilities = {
+				'.animation-delay-200': {
+					'animation-delay': '200ms'
+				},
+				'.animation-delay-300': {
+					'animation-delay': '300ms'
+				},
+				'.animation-delay-400': {
+					'animation-delay': '400ms'
+				},
+				'.animation-delay-500': {
+					'animation-delay': '500ms'
+				},
+				'.animation-delay-600': {
+					'animation-delay': '600ms'
+				},
+				'.animation-delay-700': {
+					'animation-delay': '700ms'
+				},
+				'.animation-delay-800': {
+					'animation-delay': '800ms'
+				},
+				'.animation-delay-900': {
+					'animation-delay': '900ms'
+				},
+				'.animation-delay-1000': {
+					'animation-delay': '1000ms'
+				}
+			}
+			addUtilities(newUtilities)
+		}
+	],
 } satisfies Config;
