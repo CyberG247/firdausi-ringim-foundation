@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import LendAHand from "./pages/LendAHand";
 import PartnerWithUs from "./pages/PartnerWithUs";
 import Donate from "./pages/Donate";
+import PaymentSuccess from "./pages/PaymentSuccess";
 import Volunteer from "./pages/Volunteer";
 import JigawaProject from "./pages/JigawaProject";
 import GirlsProject from "./pages/GirlsProject";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/lend-a-hand" element={<LendAHand />} />
           <Route path="/partner-with-us" element={<PartnerWithUs />} />
           <Route path="/donate" element={<Donate />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/jigawa-project" element={<JigawaProject />} />
           <Route path="/girls-project" element={<GirlsProject />} />
