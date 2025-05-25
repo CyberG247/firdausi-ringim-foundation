@@ -35,8 +35,10 @@ const Hero = () => {
               </Link>
               
               <Link to="/partner-with-us">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-foundation-blue px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 w-full sm:w-auto">
+                <Button size="lg" className="bg-foundation-light text-foundation-blue hover:bg-foundation-light/90 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 w-full sm:w-auto">
+                  <Users className="w-5 h-5 mr-2" />
                   Partner With Us
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
             </div>
