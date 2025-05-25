@@ -1,11 +1,95 @@
 
+import { useState } from 'react';
 import { Heart, ArrowRight, Shield, Award, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import { processPayment, PaymentData } from '@/utils/paymentUtils';
 
 const Donate = () => {
+  const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedAmount, setSelectedAmount] = useState(5000);
+  const [customAmount, setCustomAmount] = useState('');
+  const [donationType, setDonationType] = useState<'one-time' | 'monthly'>('one-time');
+  const [purpose, setPurpose] = useState('Where needed most');
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    receiveUpdates: false
+  });
+
+  const handleAmountSelect = (amount: number) => {
+    setSelectedAmount(amount);
+    setCustomAmount('');
+  };
+
+  const handleCustomAmountChange = (value: string) => {
+    setCustomAmount(value);
+    if (value) {
+      setSelectedAmount(parseInt(value));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.fullName || !formData.email || !formData.phone) {
+      toast({
+        title: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const finalAmount = customAmount ? parseInt(customAmount) : selectedAmount;
+    
+    if (!finalAmount || finalAmount < 100) {
+      toast({
+        title: "Please enter a valid amount (minimum ₦100)",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      const paymentData: PaymentData = {
+        amount: finalAmount,
+        purpose,
+        donationType,
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        receiveUpdates: formData.receiveUpdates
+      };
+
+      const result = await processPayment(paymentData);
+      
+      if (result.success) {
+        toast({
+          title: "Redirecting to payment...",
+          description: "You will be redirected to complete your donation."
+        });
+        
+        // Redirect to payment gateway
+        window.location.href = result.paymentUrl;
+      }
+    } catch (error) {
+      toast({
+        title: "Payment Error",
+        description: "There was an issue processing your payment. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -76,14 +160,30 @@ const Donate = () => {
 
             <div className="bg-foundation-blue/5 p-8 rounded-2xl">
               <h3 className="text-2xl font-bold text-foundation-dark mb-6">Donation Form</h3>
-              <form className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-foundation-dark mb-2">Donation Type</label>
                   <div className="grid grid-cols-2 gap-4">
-                    <button type="button" className="p-3 border-2 border-foundation-blue text-foundation-blue rounded-lg hover:bg-foundation-blue hover:text-white transition-colors">
+                    <button 
+                      type="button" 
+                      onClick={() => setDonationType('one-time')}
+                      className={`p-3 border-2 rounded-lg transition-colors ${
+                        donationType === 'one-time' 
+                          ? 'border-foundation-blue bg-foundation-blue text-white' 
+                          : 'border-foundation-blue text-foundation-blue hover:bg-foundation-blue hover:text-white'
+                      }`}
+                    >
                       One-time
                     </button>
-                    <button type="button" className="p-3 border-2 border-gray-300 text-gray-600 rounded-lg hover:border-foundation-blue hover:text-foundation-blue transition-colors">
+                    <button 
+                      type="button" 
+                      onClick={() => setDonationType('monthly')}
+                      className={`p-3 border-2 rounded-lg transition-colors ${
+                        donationType === 'monthly' 
+                          ? 'border-foundation-blue bg-foundation-blue text-white' 
+                          : 'border-gray-300 text-gray-600 hover:border-foundation-blue hover:text-foundation-blue'
+                      }`}
+                    >
                       Monthly
                     </button>
                   </div>
@@ -92,19 +192,51 @@ const Donate = () => {
                 <div>
                   <label className="block text-sm font-medium text-foundation-dark mb-2">Amount (₦)</label>
                   <div className="grid grid-cols-3 gap-2 mb-3">
-                    <button type="button" className="p-3 border border-gray-300 rounded-lg hover:border-foundation-blue transition-colors">₦5,000</button>
-                    <button type="button" className="p-3 border border-gray-300 rounded-lg hover:border-foundation-blue transition-colors">₦10,000</button>
-                    <button type="button" className="p-3 border border-gray-300 rounded-lg hover:border-foundation-blue transition-colors">₦25,000</button>
-                    <button type="button" className="p-3 border border-gray-300 rounded-lg hover:border-foundation-blue transition-colors">₦50,000</button>
-                    <button type="button" className="p-3 border border-gray-300 rounded-lg hover:border-foundation-blue transition-colors">₦100,000</button>
-                    <button type="button" className="p-3 border border-gray-300 rounded-lg hover:border-foundation-blue transition-colors">Other</button>
+                    {[5000, 10000, 25000, 50000, 100000].map((amount) => (
+                      <button 
+                        key={amount}
+                        type="button" 
+                        onClick={() => handleAmountSelect(amount)}
+                        className={`p-3 border rounded-lg transition-colors ${
+                          selectedAmount === amount && !customAmount
+                            ? 'border-foundation-blue bg-foundation-blue text-white'
+                            : 'border-gray-300 hover:border-foundation-blue'
+                        }`}
+                      >
+                        ₦{amount.toLocaleString()}
+                      </button>
+                    ))}
+                    <button 
+                      type="button" 
+                      onClick={() => {
+                        setSelectedAmount(0);
+                        setCustomAmount('');
+                      }}
+                      className={`p-3 border rounded-lg transition-colors ${
+                        customAmount
+                          ? 'border-foundation-blue bg-foundation-blue text-white'
+                          : 'border-gray-300 hover:border-foundation-blue'
+                      }`}
+                    >
+                      Other
+                    </button>
                   </div>
-                  <input type="number" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue" placeholder="Enter custom amount" />
+                  <input 
+                    type="number" 
+                    value={customAmount}
+                    onChange={(e) => handleCustomAmountChange(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue" 
+                    placeholder="Enter custom amount" 
+                  />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-foundation-dark mb-2">Donation Purpose</label>
-                  <select className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue">
+                  <select 
+                    value={purpose}
+                    onChange={(e) => setPurpose(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue"
+                  >
                     <option>Where needed most</option>
                     <option>Education & Bursaries</option>
                     <option>Girls Development</option>
@@ -116,22 +248,52 @@ const Donate = () => {
                 <div>
                   <label className="block text-sm font-medium text-foundation-dark mb-2">Personal Information</label>
                   <div className="space-y-3">
-                    <input type="text" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue" placeholder="Full Name" />
-                    <input type="email" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue" placeholder="Email Address" />
-                    <input type="tel" className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue" placeholder="Phone Number" />
+                    <input 
+                      type="text" 
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue" 
+                      placeholder="Full Name" 
+                      required
+                    />
+                    <input 
+                      type="email" 
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue" 
+                      placeholder="Email Address" 
+                      required
+                    />
+                    <input 
+                      type="tel" 
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-foundation-blue" 
+                      placeholder="Phone Number" 
+                      required
+                    />
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <input type="checkbox" className="rounded" />
+                  <input 
+                    type="checkbox" 
+                    checked={formData.receiveUpdates}
+                    onChange={(e) => setFormData({...formData, receiveUpdates: e.target.checked})}
+                    className="rounded" 
+                  />
                   <label className="text-sm text-gray-600">
                     I would like to receive updates about the foundation's work
                   </label>
                 </div>
 
-                <Button className="w-full bg-foundation-blue hover:bg-foundation-blue/90 text-white py-3">
+                <Button 
+                  type="submit"
+                  disabled={isProcessing}
+                  className="w-full bg-foundation-blue hover:bg-foundation-blue/90 text-white py-3"
+                >
                   <Heart className="w-5 h-5 mr-2" />
-                  Proceed to Secure Payment
+                  {isProcessing ? 'Processing...' : 'Proceed to Secure Payment'}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
 

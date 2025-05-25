@@ -107,7 +107,7 @@ const AboutUs = () => {
                 />
               </div>
               <h4 className="text-2xl font-bold text-foundation-dark mb-2">Firdausi Umar Ringim</h4>
-              <p className="text-foundation-blue font-semibold">Founder & Director</p>
+              <p className="text-foundation-blue font-semibold">President & Founder of Firdausi Ringim Foundation</p>
             </div>
 
             <div className="lg:col-span-2 space-y-4">
