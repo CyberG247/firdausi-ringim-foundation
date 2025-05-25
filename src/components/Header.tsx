@@ -26,7 +26,7 @@ const Header = () => {
             <img 
               src="/lovable-uploads/6d1ca7d2-2197-4fea-9cbb-e0057183f829.png" 
               alt="Firdausi Ringim Foundation" 
-              className="h-19 w-auto"
+              className="h-12 w-auto"
             />
           </Link>
 
